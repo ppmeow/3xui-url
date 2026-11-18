@@ -10,6 +10,7 @@
 #   3. 「默认代理」把 美国 排第一，开箱默认走美国节点
 #   4. 新增 Disney 分组和 disney 规则集（默认走美国）
 #   5. 新增 sniffer 段（面板开启 Use DNS from remote rules 后一并导入）
+#   6. 2026-11-18 精简：地区组只留 美国、香港，其余已删（自建单节点用不上，空组会显示失败）
 # ============================================================
 
 # --- DNS 定义 ---
@@ -339,14 +340,7 @@ proxies_default:
         '自动选择',
         '负载均衡',
         '香港',
-        '日本',
         '美国',
-        '新加坡',
-        '台湾',
-        '低倍率节点',
-        '高倍率节点',
-        '家宽节点',
-        '其他节点',
       ],
   }
 
@@ -360,41 +354,17 @@ proxies_direct:
         '负载均衡',
         '直连',
         '香港',
-        '日本',
         '美国',
-        '新加坡',
-        '台湾',
-        '低倍率节点',
-        '高倍率节点',
-        '家宽节点',
-        '其他节点',
       ],
   }
 
 proxies_reject: &proxies_reject { proxies: ['REJECT', 'REJECT-DROP', 'PASS'] }
 
 HK_filter: &HK_filter { filter: '(?i)(🇭🇰|香港|(?<![A-Za-z])HKG?(?![A-Za-z])|hong\s*kong)' }
-JP_filter: &JP_filter { filter: '(?i)(🇯🇵|日本|东京|大阪|京都|(?<![A-Za-z])JPN?(?![A-Za-z])|japan)' }
 US_filter:
   &US_filter {
     filter: '(?i)(🇺🇸|美国|纽约|洛杉矶|旧金山|芝加哥|休斯顿|迈阿密|西雅图|波士顿|华盛顿|拉斯维加斯|圣何塞|(?<![A-Za-z])USA?(?![A-Za-z])|america|united\s*states)',
   }
-SG_filter: &SG_filter { filter: '(?i)(🇸🇬|新加坡|狮城|(?<![A-Za-z])SGP?(?![A-Za-z])|singapore)' }
-TW_filter: &TW_filter { filter: '(?i)(🇹🇼|台湾|台北|高雄|(?<![A-Za-z])TWN?(?![A-Za-z])|taiwan)' }
-low_filter:
-  &low_filter {
-    filter: '(?i)(^(?!.*(?:剩|期)).*(?:(?<![\d.])0(\.[0-5]|[*×✕✖⨯⨉x倍]))|(?:[*×✕✖⨯⨉x]0)|^(?!.*(?:客户端|软件)).*下载|低倍|免费|(?<![A-Za-z])free(?![A-Za-z]))',
-  }
-high_filter:
-  &high_filter {
-    filter: '(?i)(?:[*×✕✖⨯⨉x](?:[2-9]\d*|[1-9]\d+)(?:\.\d+)?)|(?:(?<![\d.])(?:[2-9]\d*|[1-9]\d+)(?:\.\d+)?(?:倍|[*×✕✖⨯⨉x]))',
-  }
-home_filter: &home_filter { filter: '(?i)(家宽|住宅|原生\s*IP|家庭宽带|\bISP\b|\bRES\b|residential)' }
-exclude_filter:
-  &exclude_filter {
-    exclude-filter: '(?i)(🇭🇰|香港|(?<![A-Za-z])HKG?(?![A-Za-z])|hong\s*kong|🇯🇵|日本|东京|大阪|京都|(?<![A-Za-z])JPN?(?![A-Za-z])|japan|🇺🇸|美国|纽约|洛杉矶|旧金山|芝加哥|休斯顿|迈阿密|西雅图|波士顿|华盛顿|拉斯维加斯|圣何塞|(?<![A-Za-z])USA?(?![A-Za-z])|america|united\s*states|🇸🇬|新加坡|狮城|(?<![A-Za-z])SGP?(?![A-Za-z])|singapore|🇹🇼|台湾|台北|高雄|(?<![A-Za-z])TWN?(?![A-Za-z])|taiwan)',
-  }
-
 proxy-groups:
   - name: '默认代理'
     <<: *group_common_select
@@ -405,13 +375,6 @@ proxy-groups:
         '自动选择',
         '负载均衡',
         '香港',
-        '日本',
-        '新加坡',
-        '台湾',
-        '低倍率节点',
-        '高倍率节点',
-        '家宽节点',
-        '其他节点',
       ]
     icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Proxy.svg'
 
@@ -467,7 +430,7 @@ proxy-groups:
 
   - name: 'TikTok'
     <<: [*group_common_select, *proxies_default]
-    default-selected: '日本'
+    default-selected: '美国'
     icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/TikTok.svg'
 
   - name: 'Twitter'
@@ -505,7 +468,7 @@ proxy-groups:
 
   - name: 'Crypto'
     <<: [*group_common_select, *proxies_default]
-    default-selected: '日本'
+    default-selected: '美国'
     icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Bitcoin.svg'
 
   - name: 'PayPal'
@@ -545,15 +508,6 @@ proxy-groups:
   - name: '香港-自动选择'
     <<: [*group_common_auto, *HK_filter]
 
-  - name: '日本'
-    <<: [*group_common_select, *JP_filter]
-    include-all: true
-    proxies: ['日本-自动选择']
-    icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Japan.svg'
-
-  - name: '日本-自动选择'
-    <<: [*group_common_auto, *JP_filter]
-
   - name: '美国'
     <<: [*group_common_select, *US_filter]
     include-all: true
@@ -562,61 +516,6 @@ proxy-groups:
 
   - name: '美国-自动选择'
     <<: [*group_common_auto, *US_filter]
-
-  - name: '新加坡'
-    <<: [*group_common_select, *SG_filter]
-    include-all: true
-    proxies: ['新加坡-自动选择']
-    icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Singapore.svg'
-
-  - name: '新加坡-自动选择'
-    <<: [*group_common_auto, *SG_filter]
-
-  - name: '台湾'
-    <<: [*group_common_select, *TW_filter]
-    include-all: true
-    proxies: ['台湾-自动选择']
-    icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Taiwan.svg'
-
-  - name: '台湾-自动选择'
-    <<: [*group_common_auto, *TW_filter]
-
-  - name: '低倍率节点'
-    <<: [*group_common_select, *low_filter]
-    include-all: true
-    proxies: ['低倍率节点-自动选择']
-    icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Available.svg'
-
-  - name: '低倍率节点-自动选择'
-    <<: [*group_common_auto, *low_filter]
-
-  - name: '高倍率节点'
-    <<: [*group_common_select, *high_filter]
-    include-all: true
-    proxies: ['高倍率节点-自动选择']
-    icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Airport.svg'
-
-  - name: '高倍率节点-自动选择'
-    <<: [*group_common_auto, *high_filter]
-
-  - name: '家宽节点'
-    <<: [*group_common_select, *home_filter]
-    include-all: true
-    proxies: ['家宽节点-自动选择']
-    icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Home.svg'
-
-  - name: '家宽节点-自动选择'
-    <<: [*group_common_auto, *home_filter]
-
-  - name: '其他节点'
-    <<: [*group_common_select, *exclude_filter]
-    include-all: true
-    exclude-type: 'DIRECT'
-    proxies: ['其他节点-自动选择']
-    icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/WorldMap.svg'
-
-  - name: '其他节点-自动选择'
-    <<: [*group_common_auto, *exclude_filter]
 
 # --- 路由规则 (Rules) ---
 rules:
