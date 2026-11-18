@@ -7,10 +7,11 @@
 #  改动点（相对原版）：
 #   1. 删除 proxy-providers 和自带直连节点（3x-ui 不导入，避免空订阅报错）
 #   2. 「直连」组改用 mihomo 内置 DIRECT
-#   3. 「默认代理」把 美国 排第一，开箱默认走美国节点
+#   3. 「默认代理」把 🇺🇸 美国 排第一，开箱默认走美国节点
 #   4. 新增 Disney 分组和 disney 规则集（默认走美国）
 #   5. 新增 sniffer 段（面板开启 Use DNS from remote rules 后一并导入）
-#   6. 2026-11-18 精简：地区组只留 美国、香港，其余已删（自建单节点用不上，空组会显示失败）
+#   6. 2026-11-18 精简：地区组只留 🇺🇸 美国、🇭🇰 香港，其余已删（自建单节点用不上，空组会显示失败）
+#   7. 2026-11-18 晚：地区组名加国旗 emoji（🇺🇸 美国 / 🇭🇰 香港 及各自 -自动选择 子组），引用已同步；filter 正则不动（按节点名匹配）
 # ============================================================
 
 # --- DNS 定义 ---
@@ -339,8 +340,8 @@ proxies_default:
         '手动选择',
         '自动选择',
         '负载均衡',
-        '香港',
-        '美国',
+        '🇭🇰 香港',
+        '🇺🇸 美国',
       ],
   }
 
@@ -353,8 +354,8 @@ proxies_direct:
         '自动选择',
         '负载均衡',
         '直连',
-        '香港',
-        '美国',
+        '🇭🇰 香港',
+        '🇺🇸 美国',
       ],
   }
 
@@ -370,11 +371,11 @@ proxy-groups:
     <<: *group_common_select
     proxies:
       [
-        '美国',
+        '🇺🇸 美国',
         '手动选择',
         '自动选择',
         '负载均衡',
-        '香港',
+        '🇭🇰 香港',
       ]
     icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Proxy.svg'
 
@@ -405,7 +406,7 @@ proxy-groups:
 
   - name: 'AI'
     <<: [*group_common_select, *proxies_default]
-    default-selected: '美国'
+    default-selected: '🇺🇸 美国'
     icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/OpenAI.svg'
 
   - name: 'GitHub'
@@ -430,7 +431,7 @@ proxy-groups:
 
   - name: 'TikTok'
     <<: [*group_common_select, *proxies_default]
-    default-selected: '美国'
+    default-selected: '🇺🇸 美国'
     icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/TikTok.svg'
 
   - name: 'Twitter'
@@ -451,7 +452,7 @@ proxy-groups:
 
   - name: 'Disney'
     <<: [*group_common_select, *proxies_default]
-    default-selected: '美国'
+    default-selected: '🇺🇸 美国'
     icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Disney.svg'
 
   - name: 'Emby'
@@ -468,22 +469,22 @@ proxy-groups:
 
   - name: 'Crypto'
     <<: [*group_common_select, *proxies_default]
-    default-selected: '美国'
+    default-selected: '🇺🇸 美国'
     icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Bitcoin.svg'
 
   - name: 'PayPal'
     <<: [*group_common_select, *proxies_default]
-    default-selected: '美国'
+    default-selected: '🇺🇸 美国'
     icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/PayPal.svg'
 
   - name: 'Patreon'
     <<: [*group_common_select, *proxies_default]
-    default-selected: '香港'
+    default-selected: '🇭🇰 香港'
     icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/Patreon.svg'
 
   - name: 'EHentai'
     <<: [*group_common_select, *proxies_direct]
-    default-selected: '美国'
+    default-selected: '🇺🇸 美国'
     icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/EHentai.svg'
 
   - name: 'AdBlock'
@@ -499,22 +500,22 @@ proxy-groups:
     proxies: ['DIRECT']
     icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/China.svg'
 
-  - name: '香港'
+  - name: '🇭🇰 香港'
     <<: [*group_common_select, *HK_filter]
     include-all: true
-    proxies: ['香港-自动选择']
+    proxies: ['🇭🇰 香港-自动选择']
     icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/HongKong.svg'
 
-  - name: '香港-自动选择'
+  - name: '🇭🇰 香港-自动选择'
     <<: [*group_common_auto, *HK_filter]
 
-  - name: '美国'
+  - name: '🇺🇸 美国'
     <<: [*group_common_select, *US_filter]
     include-all: true
-    proxies: ['美国-自动选择']
+    proxies: ['🇺🇸 美国-自动选择']
     icon: 'https://fastly.jsdelivr.net/gh/AIsouler/MyClash@main/Icons/svg/America.svg'
 
-  - name: '美国-自动选择'
+  - name: '🇺🇸 美国-自动选择'
     <<: [*group_common_auto, *US_filter]
 
 # --- 路由规则 (Rules) ---
