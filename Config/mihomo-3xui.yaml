@@ -12,6 +12,7 @@
 #   5. 新增 sniffer 段（面板开启 Use DNS from remote rules 后一并导入）
 #   6. 2026-11-18 精简：地区组只留 🇺🇸 美国、🇭🇰 香港，其余已删（自建单节点用不上，空组会显示失败）
 #   7. 2026-11-18 晚：地区组名加国旗 emoji（🇺🇸 美国 / 🇭🇰 香港 及各自 -自动选择 子组），引用已同步；filter 正则不动（按节点名匹配）
+#   8. 2026-11-19 晚：服务组加 include-all（默认代理 + proxies_default/proxies_direct），组内可直接选具体节点，不必只选地区组
 # ============================================================
 
 # --- DNS 定义 ---
@@ -334,6 +335,7 @@ group_common_load:
 
 proxies_default:
   &proxies_default {
+    include-all: true,
     proxies:
       [
         '默认代理',
@@ -347,6 +349,7 @@ proxies_default:
 
 proxies_direct:
   &proxies_direct {
+    include-all: true,
     proxies:
       [
         '默认代理',
@@ -369,6 +372,7 @@ US_filter:
 proxy-groups:
   - name: '默认代理'
     <<: *group_common_select
+    include-all: true
     proxies:
       [
         '🇺🇸 美国',
